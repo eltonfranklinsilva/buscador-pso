@@ -68,7 +68,16 @@ async function buscar() {
 
   try {
     const resp = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/list/${BUCKET}/${ean}`,
+      `${SUPABASE_URL}/storage/v1/object/list/${BUCKET}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ limit: 100, offset: 0, prefix: ean + '/' })
+      }
+    );
       {
         method: 'POST',
         headers: {
