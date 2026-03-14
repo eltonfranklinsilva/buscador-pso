@@ -53,6 +53,17 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbye3Wl03FXVOVc8UJxI0CUPdk1zcYocNddzgsRqQDrNy4Vk7vck-o7PxpWOf5wGI5tv/exec';
 let arquivos = [];
 
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    window[cb] = (data) => { delete window[cb]; document.head.removeChild(script); resolve(data); };
+    const script = document.createElement('script');
+    script.src = url + '&callback=' + cb;
+    script.onerror = () => { delete window[cb]; reject(new Error('Erro na requisição')); };
+    document.head.appendChild(script);
+  });
+}
+
 async function buscar() {
   const ean = document.getElementById('ean-input').value.trim();
   if (!ean) { setStatus('Digite um código EAN.', 'erro'); return; }
@@ -65,8 +76,7 @@ async function buscar() {
   setStatus('🔎 Buscando imagens para o EAN ' + ean + '...', '');
 
   try {
-    const resp = await fetch(API_URL + '?ean=' + encodeURIComponent(ean));
-    const data = await resp.json();
+    const data = await jsonp(API_URL + '?ean=' + encodeURIComponent(ean));
 
     if (data.erro) { setStatus('❌ ' + data.erro, 'erro'); return; }
     if (!data.imagens || !data.imagens.length) { setStatus('Nenhuma imagem encontrada.', 'erro'); return; }
@@ -75,21 +85,18 @@ async function buscar() {
     setStatus('✓ ' + arquivos.length + ' imagem(ns) encontrada(s) — carregando previews...', 'ok');
 
     const grid = document.getElementById('preview');
-
-    arquivos.forEach((f, i) => {
+    arquivos.forEach(f => {
       const wrap = document.createElement('div');
       wrap.className = 'img-wrap';
       wrap.innerHTML = '<span class="loader">carregando...</span>';
       grid.appendChild(wrap);
 
-      fetch(API_URL + '?id=' + f.id)
-        .then(r => r.json())
+      jsonp(API_URL + '?id=' + f.id)
         .then(d => {
           if (d.base64) {
             const img = document.createElement('img');
             img.src = 'data:' + d.mimeType + ';base64,' + d.base64;
             img.alt = f.nome;
-            img.title = f.nome;
             wrap.innerHTML = '';
             wrap.appendChild(img);
           }
@@ -101,7 +108,7 @@ async function buscar() {
     setStatus('✓ ' + arquivos.length + ' imagem(ns) encontrada(s)', 'ok');
 
   } catch(e) {
-    setStatus('❌ Erro de conexão: ' + e.message, 'erro');
+    setStatus('❌ ' + e.message, 'erro');
   } finally {
     document.getElementById('btn-buscar').disabled = false;
   }
@@ -122,8 +129,7 @@ async function baixarZip() {
     for (let i = 0; i < arquivos.length; i++) {
       const f = arquivos[i];
       prog.textContent = 'Baixando imagem ' + (i + 1) + ' de ' + arquivos.length + '...';
-      const resp = await fetch(API_URL + '?id=' + f.id);
-      const d = await resp.json();
+      const d = await jsonp(API_URL + '?id=' + f.id);
       if (d.base64) {
         const byteChars = atob(d.base64);
         const byteArr = new Uint8Array(byteChars.length);
