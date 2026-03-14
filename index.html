@@ -38,6 +38,9 @@
   .overlay span { color: white; font-size: 28px; }
   .img-wrap img { width: 100%; height: 100%; object-fit: cover; }
   .img-wrap .loader { font-size: 11px; color: #aaa; }
+  .img-info { padding: 6px 8px; text-align: center; }
+  .img-nome { font-size: 11px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .img-dim { font-size: 11px; color: #aaa; margin-top: 2px; }
   .img-actions { padding: 8px; display: flex; justify-content: center; }
   .btn-dl-individual { width: 100%; padding: 7px; background: #e8f0fe; color: #1a73e8; border: none; border-radius: 7px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background .2s; }
   .btn-dl-individual:hover { background: #d2e3fc; }
@@ -45,8 +48,6 @@
   .btn-baixar:hover { background: #136428; }
   .btn-baixar:disabled { background: #aaa; cursor: not-allowed; }
   .progress { margin-top: 10px; font-size: 13px; color: #666; min-height: 18px; }
-
-  /* Lightbox */
   .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; }
   .lightbox.ativo { display: flex; }
   .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 8px; }
@@ -54,7 +55,7 @@
   .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); color: white; font-size: 42px; cursor: pointer; background: none; border: none; padding: 10px; }
   .lb-prev { left: 16px; }
   .lb-next { right: 16px; }
-  .lb-info { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: #ccc; font-size: 13px; }
+  .lb-info { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: #ccc; font-size: 13px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -80,7 +81,7 @@
     </div>
     <div class="check-row">
       <input type="checkbox" id="manter-proporcao" checked />
-      <label for="manter-proporcao">Manter proporcao original (preencha so largura ou so altura)</label>
+      <label for="manter-proporcao">Manter proporcao original</label>
     </div>
   </div>
 
@@ -89,7 +90,6 @@
   <div class="progress" id="progress"></div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox">
   <button class="lb-fechar" onclick="fecharLightbox()">x</button>
   <button class="lb-nav lb-prev" onclick="navegarLightbox(-1)">&#8249;</button>
@@ -168,9 +168,18 @@ function buscar() {
       wrap.onclick = function() { abrirLightbox(idx); };
 
       var img = document.createElement('img');
-      img.src = f.url;
       img.alt = f.nome;
       img.onerror = function() { wrap.innerHTML = '<span class="loader">erro</span>'; };
+
+      var dimEl = document.createElement('div');
+      dimEl.className = 'img-dim';
+      dimEl.textContent = 'carregando...';
+
+      img.onload = function() {
+        dimEl.textContent = img.naturalWidth + ' x ' + img.naturalHeight + ' px';
+      };
+
+      img.src = f.url;
 
       var overlay = document.createElement('div');
       overlay.className = 'overlay';
@@ -179,16 +188,25 @@ function buscar() {
       wrap.appendChild(img);
       wrap.appendChild(overlay);
 
+      var info = document.createElement('div');
+      info.className = 'img-info';
+      var nomeEl = document.createElement('div');
+      nomeEl.className = 'img-nome';
+      nomeEl.textContent = f.nome;
+      nomeEl.title = f.nome;
+      info.appendChild(nomeEl);
+      info.appendChild(dimEl);
+
       var actions = document.createElement('div');
       actions.className = 'img-actions';
-
       var btnDl = document.createElement('button');
       btnDl.className = 'btn-dl-individual';
       btnDl.textContent = 'Baixar esta imagem';
-      btnDl.onclick = function() { baixarIndividual(f, idx); };
-
+      btnDl.onclick = function() { baixarIndividual(f); };
       actions.appendChild(btnDl);
+
       card.appendChild(wrap);
+      card.appendChild(info);
       card.appendChild(actions);
       grid.appendChild(card);
     });
@@ -212,30 +230,59 @@ function getResize() {
 }
 
 function redimensionarBlob(blob, w, h, manter) {
-  return new Promise(function(resolve) {
+  return new Promise(function(resolve, reject) {
     if (!w && !h) { resolve(blob); return; }
+
     var url = URL.createObjectURL(blob);
     var img = new Image();
+
     img.onload = function() {
-      var sw = img.naturalWidth;
-      var sh = img.naturalHeight;
-      var tw = w, th = h;
-      if (manter) {
-        if (w && !h) { th = Math.round(sh * w / sw); tw = w; }
-        else if (h && !w) { tw = Math.round(sw * h / sh); th = h; }
-        else if (w && h) { var r = Math.min(w/sw, h/sh); tw = Math.round(sw*r); th = Math.round(sh*r); }
+      try {
+        var sw = img.naturalWidth;
+        var sh = img.naturalHeight;
+        var tw = w || sw;
+        var th = h || sh;
+
+        if (manter) {
+          if (w && !h) { th = Math.round(sh * w / sw); tw = w; }
+          else if (h && !w) { tw = Math.round(sw * h / sh); th = h; }
+          else if (w && h) { var r = Math.min(w / sw, h / sh); tw = Math.round(sw * r); th = Math.round(sh * r); }
+        } else {
+          tw = w || sw;
+          th = h || sh;
+        }
+
+        if (tw < 1) tw = 1;
+        if (th < 1) th = 1;
+
+        var canvas = document.createElement('canvas');
+        canvas.width = tw;
+        canvas.height = th;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, tw, th);
+        URL.revokeObjectURL(url);
+
+        var mime = blob.type && blob.type !== '' ? blob.type : 'image/jpeg';
+        canvas.toBlob(function(b) {
+          if (b) { resolve(b); }
+          else { resolve(blob); }
+        }, mime, 0.92);
+      } catch(e) {
+        URL.revokeObjectURL(url);
+        resolve(blob);
       }
-      var canvas = document.createElement('canvas');
-      canvas.width = tw; canvas.height = th;
-      canvas.getContext('2d').drawImage(img, 0, 0, tw, th);
-      URL.revokeObjectURL(url);
-      canvas.toBlob(function(b) { resolve(b); }, blob.type || 'image/jpeg', 0.92);
     };
+
+    img.onerror = function() {
+      URL.revokeObjectURL(url);
+      resolve(blob);
+    };
+
     img.src = url;
   });
 }
 
-function baixarIndividual(f, idx) {
+function baixarIndividual(f) {
   var resize = getResize();
   fetch(f.url)
     .then(function(r) { return r.blob(); })
@@ -245,6 +292,7 @@ function baixarIndividual(f, idx) {
       a.href = URL.createObjectURL(blob);
       a.download = f.nome;
       a.click();
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
     })
     .catch(function(e) { alert('Erro ao baixar: ' + e.message); });
 }
@@ -270,6 +318,7 @@ function baixarZip() {
         a.href = URL.createObjectURL(content);
         a.download = ean + '_imagens.zip';
         a.click();
+        setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
         btn.textContent = 'Download concluido!';
         prog.textContent = '';
         btn.disabled = false;
