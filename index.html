@@ -33,146 +33,143 @@
 </head>
 <body>
 <div class="card">
-  <h1>🔍 Buscador de Imagens EAN</h1>
-  <p class="sub">Digite o código EAN do produto para visualizar e baixar todas as imagens cadastradas.</p>
-
-  <label for="ean-input">Código EAN</label>
+  <h1>Buscador de Imagens EAN</h1>
+  <p class="sub">Digite o codigo EAN do produto para visualizar e baixar todas as imagens cadastradas.</p>
+  <label for="ean-input">Codigo EAN</label>
   <div class="row">
-    <input id="ean-input" type="text" placeholder="Ex: 7891234567890" maxlength="14"
-      onkeydown="if(event.key==='Enter') buscar()" />
+    <input id="ean-input" type="text" placeholder="Ex: 7891234567890" maxlength="14" onkeydown="if(event.key==='Enter') buscar()" />
     <button class="buscar" id="btn-buscar" onclick="buscar()">Buscar</button>
   </div>
-
   <div id="status"></div>
   <div id="preview" class="preview-grid"></div>
-  <button class="btn-baixar" id="btn-baixar" onclick="baixarZip()">⬇ Baixar todas como ZIP</button>
+  <button class="btn-baixar" id="btn-baixar" onclick="baixarZip()">Baixar todas como ZIP</button>
   <div class="progress" id="progress"></div>
 </div>
-
 <script>
-const SUPABASE_URL = 'https://tzvgyooarnefpnsahxqr.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dmd5b29hcm5lZnBuc2FoeHFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjE1NDAsImV4cCI6MjA4OTA5NzU0MH0.YL8zBVRG0CfiXJkkhA0cZi820nPnEk_TWbzRi6assfA';
-const BUCKET = 'produtos-ean';
-let arquivos = [];
+var SUPABASE_URL = 'https://tzvgyooarnefpnsahxqr.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dmd5b29hcm5lZnBuc2FoeHFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjE1NDAsImV4cCI6MjA4OTA5NzU0MH0.YL8zBVRG0CfiXJkkhA0cZi820nPnEk_TWbzRi6assfA';
+var BUCKET = 'produtos-ean';
+var arquivos = [];
 
-async function buscar() {
-  const ean = document.getElementById('ean-input').value.trim();
-  if (!ean) { setStatus('Digite um código EAN.', 'erro'); return; }
+function setStatus(msg, tipo) {
+  var el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = tipo;
+}
+
+function buscar() {
+  var ean = document.getElementById('ean-input').value.trim();
+  if (!ean) { setStatus('Digite um codigo EAN.', 'erro'); return; }
 
   document.getElementById('btn-buscar').disabled = true;
   document.getElementById('btn-baixar').style.display = 'none';
   document.getElementById('preview').innerHTML = '';
   document.getElementById('progress').textContent = '';
   arquivos = [];
-  setStatus('🔎 Buscando imagens para o EAN ' + ean + '...', '');
+  setStatus('Buscando imagens para o EAN ' + ean + '...', '');
 
-  try {
-    const resp = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/list/${BUCKET}`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ limit: 100, offset: 0, prefix: ean + '/' })
-      }
-    );
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ limit: 100, offset: 0 })
-      }
-    );
-
-    const data = await resp.json();
-
-    if (!resp.ok || data.error) {
-      setStatus('❌ Erro: ' + (data.error || data.message), 'erro');
+  fetch(SUPABASE_URL + '/storage/v1/object/list/' + BUCKET, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ limit: 100, offset: 0, prefix: ean + '/' })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!Array.isArray(data)) {
+      setStatus('Erro: ' + (data.message || JSON.stringify(data)), 'erro');
       return;
     }
 
-    const imagens = data
-      .filter(f => f.name && f.name.match(/\.(jpg|jpeg|png|webp|gif)$/i))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    var imagens = data.filter(function(f) {
+      return f.name && f.name.match(/\.(jpg|jpeg|png|webp|gif)$/i);
+    }).sort(function(a, b) {
+      return a.name.localeCompare(b.name);
+    });
 
     if (!imagens.length) {
-      setStatus('❌ Nenhuma imagem encontrada para o EAN ' + ean, 'erro');
+      setStatus('Nenhuma imagem encontrada para o EAN ' + ean, 'erro');
       return;
     }
 
-    arquivos = imagens.map(f => ({
-      nome: f.name,
-      url: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${ean}/${f.name}`
-    }));
+    arquivos = imagens.map(function(f) {
+      return {
+        nome: f.name,
+        url: SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + ean + '/' + f.name
+      };
+    });
 
-    setStatus('✓ ' + arquivos.length + ' imagem(ns) encontrada(s)', 'ok');
+    setStatus(arquivos.length + ' imagem(ns) encontrada(s)', 'ok');
 
-    const grid = document.getElementById('preview');
-    arquivos.forEach(f => {
-      const wrap = document.createElement('div');
+    var grid = document.getElementById('preview');
+    arquivos.forEach(function(f) {
+      var wrap = document.createElement('div');
       wrap.className = 'img-wrap';
-      const img = document.createElement('img');
+      var img = document.createElement('img');
       img.src = f.url;
       img.alt = f.nome;
-      img.onerror = () => { wrap.innerHTML = '<span class="loader">erro</span>'; };
+      img.onerror = function() { wrap.innerHTML = '<span class="loader">erro</span>'; };
       wrap.appendChild(img);
       grid.appendChild(wrap);
     });
 
     document.getElementById('btn-baixar').style.display = 'block';
-
-  } catch(e) {
-    setStatus('❌ Erro: ' + e.message, 'erro');
-  } finally {
+  })
+  .catch(function(e) {
+    setStatus('Erro: ' + e.message, 'erro');
+  })
+  .finally(function() {
     document.getElementById('btn-buscar').disabled = false;
-  }
+  });
 }
 
-async function baixarZip() {
+function baixarZip() {
   if (!arquivos.length) return;
-  const ean = document.getElementById('ean-input').value.trim();
-  const btn = document.getElementById('btn-baixar');
-  const prog = document.getElementById('progress');
+  var ean = document.getElementById('ean-input').value.trim();
+  var btn = document.getElementById('btn-baixar');
+  var prog = document.getElementById('progress');
   btn.disabled = true;
-  btn.textContent = '⏳ Preparando ZIP...';
+  btn.textContent = 'Preparando ZIP...';
 
-  try {
-    const zip = new JSZip();
-    const pasta = zip.folder(ean);
+  var zip = new JSZip();
+  var pasta = zip.folder(ean);
+  var i = 0;
 
-    for (let i = 0; i < arquivos.length; i++) {
-      const f = arquivos[i];
-      prog.textContent = 'Baixando imagem ' + (i + 1) + ' de ' + arquivos.length + '...';
-      const resp = await fetch(f.url);
-      const blob = await resp.blob();
-      pasta.file(f.nome, blob);
+  function baixarProximo() {
+    if (i >= arquivos.length) {
+      prog.textContent = 'Gerando arquivo ZIP...';
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(content);
+        a.download = ean + '_imagens.zip';
+        a.click();
+        btn.textContent = 'Download concluido!';
+        prog.textContent = '';
+        btn.disabled = false;
+      });
+      return;
     }
 
-    prog.textContent = 'Gerando arquivo ZIP...';
-    const content = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(content);
-    a.download = ean + '_imagens.zip';
-    a.click();
+    var f = arquivos[i];
+    prog.textContent = 'Baixando imagem ' + (i + 1) + ' de ' + arquivos.length + '...';
 
-    btn.textContent = '✓ Download concluído!';
-    prog.textContent = '';
-  } catch(e) {
-    alert('Erro no download: ' + e.message);
-    btn.textContent = '⬇ Baixar todas como ZIP';
-  } finally {
-    btn.disabled = false;
+    fetch(f.url)
+      .then(function(r) { return r.blob(); })
+      .then(function(blob) {
+        pasta.file(f.nome, blob);
+        i++;
+        baixarProximo();
+      })
+      .catch(function(e) {
+        alert('Erro no download: ' + e.message);
+        btn.textContent = 'Baixar todas como ZIP';
+        btn.disabled = false;
+      });
   }
-}
 
-function setStatus(msg, tipo) {
-  const el = document.getElementById('status');
-  el.textContent = msg;
-  el.className = tipo;
+  baixarProximo();
 }
 </script>
 </body>
