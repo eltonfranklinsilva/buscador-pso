@@ -244,6 +244,17 @@ function trocarTab(tab) {
   document.getElementById('panel-ean').classList.toggle('ativa', tab === 'ean');
   document.getElementById('panel-nome').classList.toggle('ativa', tab === 'nome');
   document.getElementById('autocomplete-lista').style.display = 'none';
+  document.getElementById('ean-input').value = '';
+  document.getElementById('nome-input').value = '';
+  document.getElementById('results-card').style.display = 'none';
+  document.getElementById('produto-info').style.display = 'none';
+  document.getElementById('resize-box').style.display = 'none';
+  document.getElementById('preview').innerHTML = '';
+  document.getElementById('progress').textContent = '';
+  document.getElementById('sel-info').textContent = '';
+  arquivos = [];
+  selecionadas.clear();
+  todosSelecionados = false;
   setStatus('', '');
 }
 
