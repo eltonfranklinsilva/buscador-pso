@@ -28,12 +28,9 @@
   .step-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
   .step p { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
   .step strong { color: var(--text); font-weight: 600; }
-  .search-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
-  .search-tabs { display: flex; gap: 0; margin-bottom: 20px; border: 1.5px solid var(--gray-border); border-radius: 8px; overflow: hidden; }
-  .tab { flex: 1; padding: 10px; text-align: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--gray-bg); color: var(--gray-text); border: none; transition: all .2s; }
-  .tab.ativa { background: var(--blue); color: white; }
-  .tab-panel { display: none; }
-  .tab-panel.ativa { display: block; }
+
+  /* Search */
+  .search-card { position: relative; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
   .search-card label { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
   .search-row { display: flex; gap: 10px; }
   .search-row input { flex: 1; padding: 12px 16px; font-size: 16px; font-family: 'Open Sans', sans-serif; border: 2px solid var(--gray-border); border-radius: 8px; outline: none; transition: border-color .2s; color: var(--text); }
@@ -46,10 +43,9 @@
   #status { margin-top: 14px; font-size: 14px; color: var(--gray-text); min-height: 20px; }
   #status.erro { color: var(--red); }
   #status.ok { color: #15803d; }
-  .search-nome { position: relative; }
-  .search-nome input { width: 100%; padding: 12px 16px; font-size: 16px; font-family: 'Open Sans', sans-serif; border: 2px solid var(--gray-border); border-radius: 8px; outline: none; transition: border-color .2s; color: var(--text); }
-  .search-nome input:focus { border-color: var(--blue); }
-  .autocomplete-lista { position: absolute; top: 100%; left: 0; right: 0; background: var(--white); border: 1.5px solid var(--blue); border-top: none; border-radius: 0 0 8px 8px; max-height: 280px; overflow-y: auto; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+
+  /* Autocomplete */
+  .autocomplete-lista { position: absolute; left: 24px; right: 24px; background: var(--white); border: 1.5px solid var(--blue); border-top: none; border-radius: 0 0 8px 8px; max-height: 280px; overflow-y: auto; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
   .autocomplete-item { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--gray-border); transition: background .15s; }
   .autocomplete-item:last-child { border-bottom: none; }
   .autocomplete-item:hover, .autocomplete-item.ativo { background: var(--blue-light); }
@@ -57,6 +53,8 @@
   .autocomplete-sub { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
   .autocomplete-ean { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--blue-dark); font-weight: 600; }
   .autocomplete-vazio { padding: 12px 16px; font-size: 13px; color: var(--gray-text); text-align: center; }
+
+  /* Resize */
   .resize-box { display: none; background: var(--blue-light); border-radius: 8px; border: 1px solid var(--blue-mid); padding: 16px; margin-top: 16px; }
   .resize-box p { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--blue-dark); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
   .resize-row-inputs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -66,22 +64,22 @@
   .check-row label { font-size: 13px; color: var(--gray-text); cursor: pointer; }
 
   /* Produto info card */
-.produto-info { display: none; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
-.produto-info-header { margin-bottom: 20px; }
-.produto-ean-badge { display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; color: var(--blue-dark); background: var(--blue-light); border: 1px solid var(--blue-mid); padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
-.produto-campos { display: flex; flex-direction: column; gap: 10px; }
-.campo { background: var(--gray-bg); border-radius: 8px; border: 1px solid var(--gray-border); overflow: hidden; }
-.campo-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: var(--blue-dark); text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 14px 4px; }
-.campo-valor { font-size: 13px; color: var(--text); line-height: 1.6; padding: 0 14px 12px; white-space: pre-wrap; word-break: break-word; }
-.campo-titulo-completo .campo-valor { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; color: var(--text); }
-.campo-titulo-reduzido .campo-valor { font-size: 13px; color: var(--gray-text); }
-.campo-expandivel .campo-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; cursor: pointer; user-select: none; }
-.campo-expandivel .campo-header:hover { background: var(--blue-light); }
-.campo-expandivel .campo-label { padding: 0; }
-.campo-seta { font-size: 12px; color: var(--blue-dark); font-family: 'Montserrat', sans-serif; font-weight: 600; transition: transform .2s; display: inline-block; }
-.campo-expandivel.aberto .campo-seta { transform: rotate(180deg); }
-.campo-expandivel .campo-valor { display: none; border-top: 1px solid var(--gray-border); padding: 12px 14px; }
-.campo-expandivel.aberto .campo-valor { display: block; } { grid-column: 1 / -1; }
+  .produto-info { display: none; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+  .produto-info-header { margin-bottom: 20px; }
+  .produto-ean-badge { display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; color: var(--blue-dark); background: var(--blue-light); border: 1px solid var(--blue-mid); padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .produto-campos { display: flex; flex-direction: column; gap: 10px; }
+  .campo { background: var(--gray-bg); border-radius: 8px; border: 1px solid var(--gray-border); overflow: hidden; }
+  .campo-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: var(--blue-dark); text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 14px 4px; }
+  .campo-valor { font-size: 13px; color: var(--text); line-height: 1.6; padding: 0 14px 12px; white-space: pre-wrap; word-break: break-word; }
+  .campo-titulo-completo .campo-valor { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; color: var(--text); }
+  .campo-titulo-reduzido .campo-valor { font-size: 13px; color: var(--gray-text); }
+  .campo-expandivel .campo-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; cursor: pointer; user-select: none; }
+  .campo-expandivel .campo-header:hover { background: var(--blue-light); }
+  .campo-expandivel .campo-label { padding: 0; }
+  .campo-seta { font-size: 12px; color: var(--blue-dark); font-family: 'Montserrat', sans-serif; font-weight: 600; transition: transform .2s; display: inline-block; }
+  .campo-expandivel.aberto .campo-seta { transform: rotate(180deg); }
+  .campo-expandivel .campo-valor { display: none; border-top: 1px solid var(--gray-border); padding: 12px 14px; }
+  .campo-expandivel.aberto .campo-valor { display: block; }
 
   /* Results */
   .results-card { display: none; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
@@ -144,7 +142,7 @@
   <div class="instrucoes">
     <h2>Como usar</h2>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><p>Busque por <strong>código EAN</strong> ou pelo <strong>nome do produto</strong>.</p></div>
+      <div class="step"><div class="step-num">1</div><p>Digite o <strong>código EAN</strong> ou o <strong>nome do produto</strong> no campo de busca.</p></div>
       <div class="step"><div class="step-num">2</div><p>Veja as <strong>informações do produto</strong> e suas imagens cadastradas.</p></div>
       <div class="step"><div class="step-num">3</div><p>Selecione as imagens desejadas ou baixe <strong>todas em ZIP</strong>.</p></div>
       <div class="step"><div class="step-num">4</div><p>Defina <strong>dimensões</strong> para redimensionar antes de baixar.</p></div>
@@ -152,25 +150,15 @@
   </div>
 
   <div class="search-card">
-    <div class="search-tabs">
-      <button class="tab ativa" id="tab-ean" onclick="trocarTab('ean')">Buscar por EAN</button>
-      <button class="tab" id="tab-nome" onclick="trocarTab('nome')">Buscar por nome</button>
+    <label for="busca-input">Buscar produto</label>
+    <div class="search-row">
+      <input id="busca-input" type="text" placeholder="Digite o EAN ou nome do produto"
+        oninput="filtrarBusca(this.value)"
+        onkeydown="navegarAutoComplete(event)"
+        autocomplete="off" />
+      <button class="btn-buscar" id="btn-buscar" onclick="buscar()">Buscar</button>
     </div>
-    <div class="tab-panel ativa" id="panel-ean">
-      <label for="ean-input">Código EAN do produto</label>
-      <div class="search-row">
-        <input id="ean-input" type="text" placeholder="Ex: 7891234567890" maxlength="14" onkeydown="if(event.key==='Enter') buscar()" />
-        <button class="btn-buscar" id="btn-buscar" onclick="buscar()">Buscar</button>
-      </div>
-    </div>
-    <div class="tab-panel" id="panel-nome">
-      <label>Nome do produto</label>
-      <div class="search-nome">
-        <input id="nome-input" type="text" placeholder="Ex: Actimel baunilha 200ml"
-          oninput="filtrarNome(this.value)" onkeydown="navegarAutoComplete(event)" autocomplete="off" />
-        <div class="autocomplete-lista" id="autocomplete-lista" style="display:none"></div>
-      </div>
-    </div>
+    <div class="autocomplete-lista" id="autocomplete-lista" style="display:none"></div>
     <div id="status"></div>
     <div class="resize-box" id="resize-box">
       <p>Redimensionar antes de baixar (opcional)</p>
@@ -189,14 +177,6 @@
     </div>
   </div>
 
-  <!-- Informações do produto -->
-  <div class="produto-info" id="produto-info">
-  <div class="produto-info-header">
-    <div class="produto-ean-badge" id="produto-ean-badge"></div>
-  </div>
-  <div class="produto-campos" id="produto-campos"></div>
-</div>
-
   <div class="results-card" id="results-card">
     <div class="results-header">
       <div class="results-title" id="results-title">Imagens encontradas</div>
@@ -209,6 +189,13 @@
     <div id="preview" class="preview-grid"></div>
     <div class="sel-info" id="sel-info"></div>
     <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="produto-info" id="produto-info">
+    <div class="produto-info-header">
+      <div class="produto-ean-badge" id="produto-ean-badge"></div>
+    </div>
+    <div class="produto-campos" id="produto-campos"></div>
   </div>
 </div>
 
@@ -232,20 +219,14 @@ var lbIndex = 0;
 var todosSelecionados = false;
 var catalogo = [];
 var acIndex = -1;
+var eanAtual = '';
 
 fetch('catalogo.json')
   .then(function(r) { return r.json(); })
   .then(function(data) { catalogo = data; })
   .catch(function() { catalogo = []; });
 
-function trocarTab(tab) {
-  document.getElementById('tab-ean').classList.toggle('ativa', tab === 'ean');
-  document.getElementById('tab-nome').classList.toggle('ativa', tab === 'nome');
-  document.getElementById('panel-ean').classList.toggle('ativa', tab === 'ean');
-  document.getElementById('panel-nome').classList.toggle('ativa', tab === 'nome');
-  document.getElementById('autocomplete-lista').style.display = 'none';
-  document.getElementById('ean-input').value = '';
-  document.getElementById('nome-input').value = '';
+function limparResultados() {
   document.getElementById('results-card').style.display = 'none';
   document.getElementById('produto-info').style.display = 'none';
   document.getElementById('resize-box').style.display = 'none';
@@ -255,13 +236,18 @@ function trocarTab(tab) {
   arquivos = [];
   selecionadas.clear();
   todosSelecionados = false;
+  eanAtual = '';
   setStatus('', '');
 }
 
-function filtrarNome(valor) {
+function filtrarBusca(valor) {
   acIndex = -1;
   var lista = document.getElementById('autocomplete-lista');
   if (!valor || valor.length < 2) { lista.style.display = 'none'; return; }
+
+  var soNumeros = /^\d+$/.test(valor.trim());
+  if (soNumeros) { lista.style.display = 'none'; return; }
+
   var termo = valor.toLowerCase().trim();
   var palavras = termo.split(/\s+/);
   var resultados = catalogo.filter(function(p) {
@@ -291,22 +277,26 @@ function filtrarNome(valor) {
 function navegarAutoComplete(e) {
   var lista = document.getElementById('autocomplete-lista');
   var itens = lista.querySelectorAll('.autocomplete-item');
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (itens.length && acIndex >= 0) { itens[acIndex].click(); return; }
+    buscar(); return;
+  }
   if (!itens.length) return;
   if (e.key === 'ArrowDown') { e.preventDefault(); acIndex = Math.min(acIndex+1, itens.length-1); }
   else if (e.key === 'ArrowUp') { e.preventDefault(); acIndex = Math.max(acIndex-1, 0); }
-  else if (e.key === 'Enter') { e.preventDefault(); if (acIndex >= 0) itens[acIndex].click(); return; }
   else if (e.key === 'Escape') { lista.style.display = 'none'; return; }
   itens.forEach(function(el, i) { el.classList.toggle('ativo', i === acIndex); });
 }
 
 function selecionarProduto(p) {
-  document.getElementById('nome-input').value = p.titulo_completo || p.nome;
+  document.getElementById('busca-input').value = p.titulo_completo || p.nome;
   document.getElementById('autocomplete-lista').style.display = 'none';
   buscarPorEan(p.ean, p);
 }
 
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.search-nome')) document.getElementById('autocomplete-lista').style.display = 'none';
+  if (!e.target.closest('.search-card')) document.getElementById('autocomplete-lista').style.display = 'none';
 });
 
 function setStatus(msg, tipo) {
@@ -316,10 +306,25 @@ function setStatus(msg, tipo) {
 }
 
 function buscar() {
-  var ean = document.getElementById('ean-input').value.trim();
-  if (!ean) { setStatus('Digite um codigo EAN.', 'erro'); return; }
-  var produto = catalogo.find(function(p) { return p.ean === ean; });
-  buscarPorEan(ean, produto || null);
+  var valor = document.getElementById('busca-input').value.trim();
+  if (!valor) { setStatus('Digite um EAN ou nome do produto.', 'erro'); return; }
+  document.getElementById('autocomplete-lista').style.display = 'none';
+
+  var soNumeros = /^\d+$/.test(valor);
+  if (soNumeros) {
+    var produto = catalogo.find(function(p) { return p.ean === valor; });
+    buscarPorEan(valor, produto || null);
+  } else {
+    var termo = valor.toLowerCase();
+    var encontrado = catalogo.find(function(p) {
+      return (p.nome + ' ' + (p.titulo_completo || '')).toLowerCase().includes(termo);
+    });
+    if (encontrado) {
+      buscarPorEan(encontrado.ean, encontrado);
+    } else {
+      setStatus('❌ Nenhum produto encontrado para "' + valor + '"', 'erro');
+    }
+  }
 }
 
 function exibirInfoProduto(ean, produto) {
@@ -378,17 +383,10 @@ function exibirInfoProduto(ean, produto) {
 }
 
 function buscarPorEan(ean, produto) {
+  limparResultados();
   var btn = document.getElementById('btn-buscar');
   if (btn) btn.disabled = true;
-  document.getElementById('results-card').style.display = 'none';
-  document.getElementById('produto-info').style.display = 'none';
-  document.getElementById('resize-box').style.display = 'none';
-  document.getElementById('preview').innerHTML = '';
-  document.getElementById('progress').textContent = '';
-  document.getElementById('sel-info').textContent = '';
-  arquivos = [];
-  selecionadas.clear();
-  todosSelecionados = false;
+  eanAtual = ean;
   setStatus('Buscando imagens para o EAN ' + ean + '...', '');
 
   fetch(GITHUB_API + '/' + encodeURIComponent(ean), {
@@ -415,7 +413,6 @@ function buscarPorEan(ean, produto) {
     });
 
     setStatus('', '');
-    exibirInfoProduto(ean, produto);
 
     var titulo = produto && produto.titulo_completo
       ? produto.titulo_completo + ' · ' + arquivos.length + ' imagem(ns)'
@@ -460,6 +457,8 @@ function buscarPorEan(ean, produto) {
       card.appendChild(cb); card.appendChild(wrap); card.appendChild(info); card.appendChild(actions);
       grid.appendChild(card);
     });
+
+    exibirInfoProduto(ean, produto);
   })
   .catch(function(e) {
     setStatus('❌ ' + e.message, 'erro');
@@ -555,7 +554,7 @@ function baixarSelecionadas() {
 
 function baixarZipLista(lista) {
   if (!lista.length) return;
-  var ean = document.getElementById('ean-input').value.trim() || 'imagens';
+  var ean = eanAtual || 'imagens';
   var btnTodos = document.getElementById('btn-baixar-todos');
   var btnSel = document.getElementById('btn-baixar-sel');
   var prog = document.getElementById('progress');
