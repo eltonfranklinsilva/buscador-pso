@@ -30,7 +30,7 @@
   .step-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
   .step p { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
   .step strong { color: var(--text); font-weight: 600; }
- 
+
   /* Search */
   .search-card { position: relative; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
   .search-card label { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
@@ -45,7 +45,7 @@
   #status { margin-top: 14px; font-size: 14px; color: var(--gray-text); min-height: 20px; }
   #status.erro { color: var(--red); }
   #status.ok { color: #15803d; }
- 
+
   /* Autocomplete */
   .autocomplete-lista { position: absolute; left: 24px; right: 24px; background: var(--white); border: 1.5px solid var(--blue); border-top: none; border-radius: 0 0 8px 8px; max-height: 280px; overflow-y: auto; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
   .autocomplete-item { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--gray-border); transition: background .15s; }
@@ -55,21 +55,21 @@
   .autocomplete-sub { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
   .autocomplete-ean { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--blue-dark); font-weight: 600; }
   .autocomplete-vazio { padding: 12px 16px; font-size: 13px; color: var(--gray-text); text-align: center; }
- 
+
   /* Resize + Formato */
   .resize-box { display: none; background: var(--blue-light); border-radius: 8px; border: 1px solid var(--blue-mid); padding: 16px; margin-top: 16px; }
-  .resize-box p { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--blue-dark); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .resize-row-inputs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .resize-row-inputs span { font-size: 13px; color: var(--gray-text); }
-  .check-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .resize-box > p { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--blue-dark); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .resize-grupo { display: flex; flex-direction: column; gap: 8px; }
+  .resize-linha { display: flex; align-items: center; gap: 10px; }
+  .resize-linha span { font-size: 13px; color: var(--gray-text); min-width: 52px; }
+  .check-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
   .check-row input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--blue); }
   .check-row label { font-size: 13px; color: var(--gray-text); cursor: pointer; }
   .formato-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--blue-mid); flex-wrap: wrap; }
-  .formato-row span { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--blue-dark); }
-  .formato-select { padding: 7px 12px; font-size: 13px; font-family: 'Open Sans', sans-serif; border: 1.5px solid var(--blue-mid); border-radius: 6px; background: var(--white); color: var(--text); outline: none; cursor: pointer; accent-color: var(--blue); }
+  .formato-row > span { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--blue-dark); }
+  .formato-select { padding: 7px 12px; font-size: 13px; font-family: 'Open Sans', sans-serif; border: 1.5px solid var(--blue-mid); border-radius: 6px; background: var(--white); color: var(--text); outline: none; cursor: pointer; }
   .formato-select:focus { border-color: var(--blue); }
-  .formato-hint { font-size: 12px; color: var(--gray-text); }
- 
+
   /* Produto info card */
   .produto-info { display: none; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
   .produto-info-header { margin-bottom: 20px; }
@@ -87,7 +87,7 @@
   .campo-expandivel.aberto .campo-seta { transform: rotate(180deg); }
   .campo-expandivel .campo-valor { display: none; border-top: 1px solid var(--gray-border); padding: 12px 14px; }
   .campo-expandivel.aberto .campo-valor { display: block; }
- 
+
   /* Results */
   .results-card { display: none; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
   .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
@@ -133,7 +133,7 @@
 </style>
 </head>
 <body>
- 
+
 <header class="header">
   <div class="header-inner">
     <img class="header-logo" src="logo.png" alt="Danone" />
@@ -144,7 +144,7 @@
     <div class="header-badge">Uso Interno</div>
   </div>
 </header>
- 
+
 <div class="main">
   <div class="instrucoes">
     <h2>Como usar</h2>
@@ -155,7 +155,7 @@
       <div class="step"><div class="step-num">4</div><p>Defina <strong>dimensões</strong> e <strong>formato</strong> antes de baixar.</p></div>
     </div>
   </div>
- 
+
   <div class="search-card">
     <label for="busca-input">Buscar produto</label>
     <div class="search-row">
@@ -169,17 +169,21 @@
     <div id="status"></div>
     <div class="resize-box" id="resize-box">
       <p>Opções de download (opcionais)</p>
-      <div class="resize-row-inputs">
-        <span>Largura:</span>
-        <input type="number" id="resize-w" placeholder="ex: 800" min="10" max="5000" />
-        <span>px</span>
-        <span style="margin-left:8px">Altura:</span>
-        <input type="number" id="resize-h" placeholder="ex: 800" min="10" max="5000" />
-        <span>px</span>
-      </div>
-      <div class="check-row">
-        <input type="checkbox" id="manter-proporcao" checked />
-        <label for="manter-proporcao">Manter proporção original</label>
+      <div class="resize-grupo">
+        <div class="resize-linha">
+          <span>Largura:</span>
+          <input type="number" id="resize-w" placeholder="ex: 800" min="10" max="5000" />
+          <span>px</span>
+        </div>
+        <div class="resize-linha">
+          <span>Altura:</span>
+          <input type="number" id="resize-h" placeholder="ex: 800" min="10" max="5000" />
+          <span>px</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="manter-proporcao" checked />
+          <label for="manter-proporcao">Manter proporção original</label>
+        </div>
       </div>
       <div class="formato-row">
         <span>Formato de saída:</span>
@@ -189,11 +193,10 @@
           <option value="image/png">PNG</option>
           <option value="image/webp">WebP</option>
         </select>
-        <span class="formato-hint">Aplica a todos os downloads</span>
       </div>
     </div>
   </div>
- 
+
   <div class="results-card" id="results-card">
     <div class="results-header">
       <div class="results-title" id="results-title">Imagens encontradas</div>
@@ -207,7 +210,7 @@
     <div class="sel-info" id="sel-info"></div>
     <div class="progress" id="progress"></div>
   </div>
- 
+
   <div class="produto-info" id="produto-info">
     <div class="produto-info-header">
       <div class="produto-ean-badge" id="produto-ean-badge"></div>
@@ -215,7 +218,7 @@
     <div class="produto-campos" id="produto-campos"></div>
   </div>
 </div>
- 
+
 <div class="lightbox" id="lightbox">
   <button class="lb-fechar" onclick="fecharLightbox()">&#215;</button>
   <button class="lb-nav lb-prev" onclick="navegarLightbox(-1)">&#8249;</button>
@@ -223,13 +226,13 @@
   <button class="lb-nav lb-next" onclick="navegarLightbox(1)">&#8250;</button>
   <div class="lb-info" id="lb-info"></div>
 </div>
- 
+
 <script>
 var GITHUB_USUARIO = 'eltonfranklinsilva';
 var GITHUB_REPO = 'imagens-ean';
 var GITHUB_RAW = 'https://raw.githubusercontent.com/' + GITHUB_USUARIO + '/' + GITHUB_REPO + '/main';
 var GITHUB_API = 'https://api.github.com/repos/' + GITHUB_USUARIO + '/' + GITHUB_REPO + '/contents';
- 
+
 var arquivos = [];
 var selecionadas = new Set();
 var lbIndex = 0;
@@ -237,12 +240,12 @@ var todosSelecionados = false;
 var catalogo = [];
 var acIndex = -1;
 var eanAtual = '';
- 
+
 fetch('catalogo.json')
   .then(function(r) { return r.json(); })
   .then(function(data) { catalogo = data; })
   .catch(function() { catalogo = []; });
- 
+
 function limparResultados() {
   document.getElementById('results-card').style.display = 'none';
   document.getElementById('produto-info').style.display = 'none';
@@ -250,13 +253,14 @@ function limparResultados() {
   document.getElementById('preview').innerHTML = '';
   document.getElementById('progress').textContent = '';
   document.getElementById('sel-info').textContent = '';
+  document.getElementById('formato-saida').value = 'original';
   arquivos = [];
   selecionadas.clear();
   todosSelecionados = false;
   eanAtual = '';
   setStatus('', '');
 }
- 
+
 function filtrarBusca(valor) {
   acIndex = -1;
   var lista = document.getElementById('autocomplete-lista');
@@ -286,7 +290,7 @@ function filtrarBusca(valor) {
   });
   lista.style.display = 'block';
 }
- 
+
 function navegarAutoComplete(e) {
   var lista = document.getElementById('autocomplete-lista');
   var itens = lista.querySelectorAll('.autocomplete-item');
@@ -301,23 +305,23 @@ function navegarAutoComplete(e) {
   else if (e.key === 'Escape') { lista.style.display = 'none'; return; }
   itens.forEach(function(el, i) { el.classList.toggle('ativo', i === acIndex); });
 }
- 
+
 function selecionarProduto(p) {
   document.getElementById('busca-input').value = p.titulo_completo || p.nome;
   document.getElementById('autocomplete-lista').style.display = 'none';
   buscarPorEan(p.ean, p);
 }
- 
+
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.search-card')) document.getElementById('autocomplete-lista').style.display = 'none';
 });
- 
+
 function setStatus(msg, tipo) {
   var el = document.getElementById('status');
   el.textContent = msg;
   el.className = tipo;
 }
- 
+
 function buscar() {
   var valor = document.getElementById('busca-input').value.trim();
   if (!valor) { setStatus('Digite um EAN ou nome do produto.', 'erro'); return; }
@@ -338,7 +342,7 @@ function buscar() {
     }
   }
 }
- 
+
 function exibirInfoProduto(ean, produto) {
   var card = document.getElementById('produto-info');
   var badge = document.getElementById('produto-ean-badge');
@@ -385,7 +389,7 @@ function exibirInfoProduto(ean, produto) {
   if (c4) campos.appendChild(c4);
   card.style.display = campos.children.length > 0 ? 'block' : 'none';
 }
- 
+
 function buscarPorEan(ean, produto) {
   limparResultados();
   var btn = document.getElementById('btn-buscar');
@@ -462,7 +466,7 @@ function buscarPorEan(ean, produto) {
   })
   .finally(function() { if (btn) btn.disabled = false; });
 }
- 
+
 function atualizarSelInfo() {
   var n = selecionadas.size;
   document.getElementById('sel-info').textContent = n > 0 ? n + ' imagem(ns) selecionada(s)' : '';
@@ -470,7 +474,7 @@ function atualizarSelInfo() {
   btn.textContent = 'Baixar selecionadas (' + n + ')';
   btn.style.display = n > 0 ? 'block' : 'none';
 }
- 
+
 function toggleSelecionarTodos() {
   todosSelecionados = !todosSelecionados;
   selecionadas.clear();
@@ -482,7 +486,7 @@ function toggleSelecionarTodos() {
   document.getElementById('btn-select-all').textContent = todosSelecionados ? 'Desmarcar todas' : 'Selecionar todas';
   atualizarSelInfo();
 }
- 
+
 function toggleImagem(idx) {
   var cards = document.querySelectorAll('.img-card');
   var card = cards[idx];
@@ -493,34 +497,34 @@ function toggleImagem(idx) {
   document.getElementById('btn-select-all').textContent = todosSelecionados ? 'Desmarcar todas' : 'Selecionar todas';
   atualizarSelInfo();
 }
- 
+
 function getResize() {
   var w = parseInt(document.getElementById('resize-w').value) || 0;
   var h = parseInt(document.getElementById('resize-h').value) || 0;
   var manter = document.getElementById('manter-proporcao').checked;
   return { w: w, h: h, manter: manter };
 }
- 
+
 function getFormato() {
   return document.getElementById('formato-saida').value;
 }
- 
+
 function extensaoPorMime(mime) {
   var map = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
   return map[mime] || null;
 }
- 
+
 function nomeComFormato(nomeOriginal, mime) {
   if (!mime || mime === 'original') return nomeOriginal;
   var ext = extensaoPorMime(mime);
   if (!ext) return nomeOriginal;
   return nomeOriginal.replace(/\.[^.]+$/, '') + '.' + ext;
 }
- 
+
 function redimensionarBlob(blob, w, h, manter, formatoMime) {
   return new Promise(function(resolve) {
     var precisaCanvas = (w || h || (formatoMime && formatoMime !== 'original'));
-    if (!precisaCanvas) { resolve({ blob: blob, nome: null }); return; }
+    if (!precisaCanvas) { resolve({ blob: blob, mime: null }); return; }
     var url = URL.createObjectURL(blob);
     var img = new Image();
     img.onload = function() {
@@ -545,7 +549,7 @@ function redimensionarBlob(blob, w, h, manter, formatoMime) {
     img.src = url;
   });
 }
- 
+
 function baixarIndividual(f) {
   var resize = getResize();
   var formato = getFormato();
@@ -561,13 +565,13 @@ function baixarIndividual(f) {
     })
     .catch(function(e) { alert('Erro ao baixar: ' + e.message); });
 }
- 
+
 function baixarSelecionadas() {
   var lista = arquivos.filter(function(_, i) { return selecionadas.has(i); });
   if (!lista.length) return;
   baixarZipLista(lista);
 }
- 
+
 function baixarZipLista(lista) {
   if (!lista.length) return;
   var ean = eanAtual || 'imagens';
@@ -614,7 +618,7 @@ function baixarZipLista(lista) {
   }
   baixarProximo();
 }
- 
+
 function abrirLightbox(idx) {
   lbIndex = idx;
   atualizarLightbox();
@@ -625,18 +629,18 @@ function abrirLightbox(idx) {
     if (e.key === 'Escape') fecharLightbox();
   };
 }
- 
+
 function atualizarLightbox() {
   var f = arquivos[lbIndex];
   document.getElementById('lb-img').src = f.url;
   document.getElementById('lb-info').textContent = f.nome + '  (' + (lbIndex+1) + ' de ' + arquivos.length + ')';
 }
- 
+
 function navegarLightbox(dir) {
   lbIndex = (lbIndex + dir + arquivos.length) % arquivos.length;
   atualizarLightbox();
 }
- 
+
 function fecharLightbox() {
   document.getElementById('lightbox').classList.remove('ativo');
   document.onkeydown = null;
