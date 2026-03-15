@@ -321,7 +321,9 @@ function buscarPorEan(ean, nomeOverride) {
 
     var imagens = data.filter(function(f) {
       return f.name && f.name.match(/\.(jpg|jpeg|png|webp|gif)$/i);
-    }).sort(function(a, b) { return a.name.localeCompare(b.name); });
+    }).sort(function(a, b) {
+  return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+});
 
     if (!imagens.length) throw new Error('Nenhuma imagem encontrada para o EAN ' + ean);
 
